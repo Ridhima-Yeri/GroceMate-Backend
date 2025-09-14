@@ -85,7 +85,7 @@ mongoose.connect(MONGO_URI)
   });
 
 app.get('/', (req, res) => {
-  res.send('GroceMate Backend is running. Use /api/* endpoints.');
+  res.send('GroceMate Backend is running!');
 });
 
 export default app;
