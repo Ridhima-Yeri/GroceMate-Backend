@@ -84,5 +84,8 @@ mongoose.connect(MONGO_URI)
     console.error('MongoDB connection error:', err);
   });
 
+app.get('/', (req, res) => {
+  res.send('GroceMate Backend is running. Use /api/* endpoints.');
+});
 
 export default app;
