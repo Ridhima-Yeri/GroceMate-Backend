@@ -132,7 +132,7 @@ router.get('/products', authenticate, requireAdmin, async (req, res) => {
   try {
     const products = await Product.find().populate('category');
     console.log('Admin products query result:', products.map(p => ({ name: p.name, featured: p.featured })));
-    res.json({ data: products }); // <-- wrap in { data: ... }
+    res.json(products);
   } catch (error) {
     console.error('Error fetching products:', error);
     res.status(500).json({ message: 'Failed to fetch products' });
@@ -248,7 +248,7 @@ router.get('/orders', authenticate, requireAdmin, async (req, res) => {
       return orderObj;
     });
     
-    res.json({ data: normalizedOrders }); // <-- wrap in { data: ... }
+    res.json(normalizedOrders);
   } catch (error) {
     console.error('Error fetching orders:', error);
     res.status(500).json({ message: 'Failed to fetch orders' });
