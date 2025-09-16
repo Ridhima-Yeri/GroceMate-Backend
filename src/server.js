@@ -58,6 +58,9 @@ app.get('/api/orders', authenticate, async (req, res) => {
 // Public route: Place a new order
 app.post('/api/orders', authenticate, async (req, res) => {
   try {
+    // Log the incoming request body for debugging
+    console.log('Order POST body:', JSON.stringify(req.body, null, 2));
+
     const {
       items,
       total,
@@ -70,8 +73,8 @@ app.post('/api/orders', authenticate, async (req, res) => {
     if (!items || !Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ message: 'Order items are required' });
     }
-    if (!total) {
-      return res.status(400).json({ message: 'Order total is required' });
+    if (typeof total !== 'number') {
+      return res.status(400).json({ message: 'Order total must be a number' });
     }
 
     // Generate a unique order number
@@ -92,8 +95,9 @@ app.post('/api/orders', authenticate, async (req, res) => {
 
     res.status(201).json({ message: 'Order placed successfully', order });
   } catch (error) {
+    // Log the full error stack for debugging
     console.error('Error placing order:', error);
-    res.status(500).json({ message: 'Failed to place order' });
+    res.status(500).json({ message: 'Failed to place order', error: error.message, stack: error.stack });
   }
 });
 
