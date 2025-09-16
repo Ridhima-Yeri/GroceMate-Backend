@@ -58,8 +58,12 @@ app.get('/api/orders', authenticate, async (req, res) => {
 // Public route: Place a new order
 app.post('/api/orders', authenticate, async (req, res) => {
   try {
-    // Log the incoming request body for debugging
     console.log('Order POST body:', JSON.stringify(req.body, null, 2));
+    console.log('req.user:', req.user); // Add this line
+
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({ message: 'Unauthorized: User not authenticated' });
+    }
 
     const {
       items,
@@ -144,8 +148,5 @@ mongoose.connect(MONGO_URI)
     console.error('MongoDB connection error:', err);
   });
 
-app.get('/', (req, res) => {
-res.send('GroceMate Backend is running!');
-});
 
 export default app;
